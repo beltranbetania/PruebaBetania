@@ -1,0 +1,25 @@
+<resources>
+
+    <string name="facebook_app_id">979823398826214</string>
+    <string name="fb_login_protocol_scheme">fb979823398826214</string>
+
+    <string name="app_name">PruebaBetania</string>
+
+
+    <string name="welcome">Bienvenido</string>
+    <string name="cancel_login">Se canceló la operación</string>
+    <string name="error_login">Ocurrió un error al ingresar</string>
+    <string name="logout">Cerrar sesión</string>
+
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_prueba">prueba</string>
+    <string name="title_activity_menu_principal">MenuPrincipal</string>
+    <string name="title_activity_botonnnn">botonnnn</string>
+</resources>
