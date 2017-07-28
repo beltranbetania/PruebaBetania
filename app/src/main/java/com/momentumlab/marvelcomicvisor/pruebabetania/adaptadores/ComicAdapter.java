@@ -64,7 +64,15 @@ public class ComicAdapter extends RecyclerView.Adapter<ComicAdapter.ViewHolder> 
                 .crossFade()
                 .into(holder.imagen);
         holder.nombre.setText(items.get(position).getTitle());
-        holder.precio.setText("$" + items.get(position).getPrices().get(0).getPrice().toString());
+
+        if (items.get(position).getPrices().get(0).getPrice()!=0){
+
+            holder.precio.setText("$" + items.get(position).getPrices().get(0).getPrice().toString());
+        }else {
+
+            holder.precio.setText("Agotado");
+        }
+
 
 
     }

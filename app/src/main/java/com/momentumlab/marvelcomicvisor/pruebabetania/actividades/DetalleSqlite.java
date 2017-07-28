@@ -193,9 +193,10 @@ public class DetalleSqlite extends AppCompatActivity {
             } catch (SQLiteException e) {
 
             }
-
             db.close();
         }
+
+
 
     }
 

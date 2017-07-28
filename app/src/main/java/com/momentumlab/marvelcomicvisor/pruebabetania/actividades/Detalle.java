@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.facebook.Profile;
 import com.momentumlab.marvelcomicvisor.pruebabetania.Const;
+import com.momentumlab.marvelcomicvisor.pruebabetania.Fragmentos.FavoritosFragment;
 import com.momentumlab.marvelcomicvisor.pruebabetania.Fragmentos.PagerHolderFragment;
 import com.momentumlab.marvelcomicvisor.pruebabetania.R;
 import com.momentumlab.marvelcomicvisor.pruebabetania.ViewPagerCustomDuration;
@@ -74,7 +75,13 @@ public class Detalle extends AppCompatActivity {
 
         titulo.setText(comic.getTitle());
 
-        precio.setText(comic.getPrices().get(0).getPrice().toString());
+        if (comic.getPrices().get(0).getPrice()!=0){
+
+            precio.setText(comic.getPrices().get(0).getPrice().toString());
+        }else {
+            precio.setText("Agotado");
+        }
+
 
         fecha.setText(comic.getDates().get(0).getDate());
 
@@ -231,6 +238,7 @@ public class Detalle extends AppCompatActivity {
 
         String descripcion = "";
         String pathx = "";
+        String precio ="";
 
         try {
             pathx = comic.getImages().get(0).getPath() + "." + comic.getImages().get(0).getExtension();
@@ -241,8 +249,15 @@ public class Detalle extends AppCompatActivity {
         } catch (Exception e) {
         }
 
+        if (comic.getPrices().get(0).getPrice()==0){
+            precio="Agotado";
+        }else {
+
+            precio=comic.getPrices().get(0).getPrice().toString();
+        }
+
         String query = QueryComic.insertFavoritos(iduser, idComic);
-        String h = QueryComic.insertComic(comic.getId(), comic.getTitle(), comic.getDates().get(0).getDate(), comic.getPrices().get(0).getPrice().toString(), descripcion, comic.getPageCount(), pathx);
+        String h = QueryComic.insertComic(comic.getId(), comic.getTitle(), comic.getDates().get(0).getDate(), precio, descripcion, comic.getPageCount(), pathx);
         ComicsSQLiteHelper usdbh =
                 new ComicsSQLiteHelper(this, Const.NOMBRE_BD_ACTUAL, null, Const.VERSION_BD_ACTUAL);
         SQLiteDatabase db = usdbh.getWritableDatabase();
@@ -462,6 +477,9 @@ public class Detalle extends AppCompatActivity {
 
             db.close();
         }
+
+        FavoritosFragment.comics.remove(0);
+        FavoritosFragment.mAdapter.notifyDataSetChanged();
 
     }
 }

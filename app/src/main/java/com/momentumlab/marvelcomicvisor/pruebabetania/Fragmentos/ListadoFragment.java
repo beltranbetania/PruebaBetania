@@ -120,7 +120,7 @@ public class ListadoFragment extends Fragment implements ItemClickListener {
 
 
         ShowLoaded(); //MOSTRAR ANIMACION CARGANDO
-        // buscaFilms();//CARGAR LOS PRIMEROS PERSONAJES
+        // buscaComics();//CARGAR LOS PRIMEROS PERSONAJES
         getbasic();
         // return inflater.inflate(R.layout.fragment_listado, container, false);
         materialDesignFAM = (FloatingActionMenu) rootView.findViewById(R.id.material_design_android_floating_action_menu);
@@ -187,7 +187,7 @@ public class ListadoFragment extends Fragment implements ItemClickListener {
     }
 
 
-    public void buscaFilms(int total) {
+    public void buscaComics(int total) {
         int max = total - 31;
         Random r = new Random();
         int random2 = r.nextInt(max);
@@ -242,7 +242,7 @@ public class ListadoFragment extends Fragment implements ItemClickListener {
 
                     if (response.isSuccessful()) {
                         a = response.body().getData().getTotal();
-                        buscaFilms(a);
+                        buscaComics(a);
 
                     } else {
 

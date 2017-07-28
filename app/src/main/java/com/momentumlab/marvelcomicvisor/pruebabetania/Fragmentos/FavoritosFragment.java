@@ -41,10 +41,10 @@ import java.util.List;
 * */
 public class FavoritosFragment extends Fragment implements ItemClickListener {
 
-    public List<ModeloComicSqlite> personajes;
+    public static List<ModeloComicSqlite> comics;
     private int a;
     private RecyclerView mRecyclerView;
-    private ComicSqliteAdapter mAdapter;
+    public static ComicSqliteAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     RelativeLayout relativeLoaded;
     ModeloComicSqlite seleccionado;
@@ -101,7 +101,7 @@ public class FavoritosFragment extends Fragment implements ItemClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_listado, container, false);
-        this.personajes = new ArrayList<>();
+        this.comics = new ArrayList<>();
         this.a = 0;
 
         iduser = Profile.getCurrentProfile().getId();
@@ -119,7 +119,7 @@ public class FavoritosFragment extends Fragment implements ItemClickListener {
 
         mRecyclerView.setHasFixedSize(true);
 
-        mAdapter = new ComicSqliteAdapter(getActivity(), personajes);
+        mAdapter = new ComicSqliteAdapter(getActivity(), comics);
 
         mAdapter.setClickListener(this);
 
@@ -127,7 +127,7 @@ public class FavoritosFragment extends Fragment implements ItemClickListener {
 
 
         //  ShowLoaded(); //MOSTRAR ANIMACION CARGANDO
-        buscaFilms();//CARGAR LOS PRIMEROS PERSONAJES
+        buscaComics();//CARGAR LOS PRIMEROS comics
 
         // return inflater.inflate(R.layout.fragment_listado, container, false);
         materialDesignFAM = (FloatingActionMenu) rootView.findViewById(R.id.material_design_android_floating_action_menu);
@@ -184,7 +184,7 @@ public class FavoritosFragment extends Fragment implements ItemClickListener {
         Intent intent = new Intent(getActivity(), DetalleSqlite.class);
 
         Bundle bundle = new Bundle();
-        seleccionado = personajes.get(position);
+        seleccionado = comics.get(position);
         bundle.putSerializable(Const.COMIC_KEY, seleccionado); // SE PASA EL PERSONAJE CORRESPONDIENTE AL SELECCIONADO
         intent.putExtras(bundle);
         startActivity(intent);
@@ -206,8 +206,7 @@ public class FavoritosFragment extends Fragment implements ItemClickListener {
     }
 
 
-    public void buscaFilms() {
-
+    public void buscaComics() {
 
         String q = QueryComic.getComicsbyUser(iduser);
 
@@ -231,7 +230,7 @@ public class FavoritosFragment extends Fragment implements ItemClickListener {
                     f.setTitulo(titulo);
                     f.setPrecio(price);
                     f.setPath(path);
-                    personajes.add(f);
+                    comics.add(f);
                     mAdapter.notifyDataSetChanged();
                 } while (c.moveToNext());
             }
@@ -254,22 +253,25 @@ public class FavoritosFragment extends Fragment implements ItemClickListener {
 
     public void editarOrden() {
         //usar lista aux
-        Collections.shuffle(personajes);
-
+        Collections.shuffle(comics);
         mAdapter.notifyDataSetChanged();
-
     }
 
     public void research() {
-
-        int tam = personajes.size();
+        int tam = comics.size();
         for (int i = 0; i < tam; i++) {
-            personajes.remove(0);
+            comics.remove(0);
         }
-
         mAdapter.notifyDataSetChanged();
-        buscaFilms();
+        buscaComics();
 
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        research();
     }
 
 

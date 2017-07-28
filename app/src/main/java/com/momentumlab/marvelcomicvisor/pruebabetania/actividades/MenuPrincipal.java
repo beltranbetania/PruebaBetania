@@ -41,6 +41,7 @@ public class MenuPrincipal extends AppCompatActivity
     private TextView nameTextView;
     private FragmentManager fragmentManager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +56,7 @@ public class MenuPrincipal extends AppCompatActivity
             fragmentClass = ListadoFragment.class;
             try {
                 fragment = (Fragment) fragmentClass.newInstance();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -141,10 +143,13 @@ public class MenuPrincipal extends AppCompatActivity
         if (id == R.id.nav_lista) {
             fragmentClass = ListadoFragment.class;
             bandera = true;
+
         } else if (id == R.id.nav_favoritos) {
             fragmentClass = FavoritosFragment.class;
             bandera = true;
+
         } else if (id == R.id.nav_salir) {
+
             logout();
         }
 
@@ -170,7 +175,7 @@ public class MenuPrincipal extends AppCompatActivity
 
     }
 
-    private void goLoginScreen() {
+   private void goLoginScreen() {
         Intent intent = new Intent(this, Login.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -201,4 +206,6 @@ public class MenuPrincipal extends AppCompatActivity
 
         profileTracker.stopTracking();
     }
+
+
 }
