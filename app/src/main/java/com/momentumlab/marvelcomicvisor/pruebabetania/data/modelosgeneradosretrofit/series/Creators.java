@@ -4,6 +4,7 @@ package com.momentumlab.marvelcomicvisor.pruebabetania.data.modelosgeneradosretr
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.momentumlab.marvelcomicvisor.pruebabetania.data.modelosgeneradosretrofit.comic.Item;
 
 public class Creators {
 

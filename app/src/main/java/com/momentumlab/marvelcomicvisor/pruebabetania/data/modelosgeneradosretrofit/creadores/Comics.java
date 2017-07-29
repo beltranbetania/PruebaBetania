@@ -4,6 +4,7 @@ package com.momentumlab.marvelcomicvisor.pruebabetania.data.modelosgeneradosretr
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.momentumlab.marvelcomicvisor.pruebabetania.data.modelosgeneradosretrofit.comic.Item_;
 
 public class Comics {
 
@@ -15,7 +16,7 @@ public class Comics {
     private String collectionURI;
     @SerializedName("items")
     @Expose
-    private List<Item> items = null;
+    private List<Item_> items = null;
     @SerializedName("returned")
     @Expose
     private Integer returned;
@@ -36,11 +37,11 @@ public class Comics {
         this.collectionURI = collectionURI;
     }
 
-    public List<Item> getItems() {
+    public List<Item_> getItems() {
         return items;
     }
 
-    public void setItems(List<Item> items) {
+    public void setItems(List<Item_> items) {
         this.items = items;
     }
 

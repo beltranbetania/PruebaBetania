@@ -1,5 +1,7 @@
 package com.momentumlab.marvelcomicvisor.pruebabetania.actividades;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -24,6 +26,8 @@ import com.momentumlab.marvelcomicvisor.pruebabetania.ZoomOutPageTransformer;
 import com.momentumlab.marvelcomicvisor.pruebabetania.data.sqlitebd.ComicsSQLiteHelper;
 import com.momentumlab.marvelcomicvisor.pruebabetania.data.sqlitebd.ModeloComicSqlite;
 import com.momentumlab.marvelcomicvisor.pruebabetania.data.sqlitebd.QueryComic;
+
+import java.io.File;
 
 
 public class DetalleSqlite extends AppCompatActivity {
@@ -74,14 +78,18 @@ public class DetalleSqlite extends AppCompatActivity {
             Log.d("errorimage", url);
         }
 
+      /*  ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        String newname = comic.getId()+"."+ "jpg";
+        File myImageFile = new File(directory, newname);*/
+
         Glide
                 .with(this)
-                .load(url)
+                .load(comic.getPath())
                 .placeholder(R.drawable.sin_foto)
                 .error(R.drawable.sin_foto)
                 .crossFade()
                 .into(imagen);
-
 
         pager = (ViewPagerCustomDuration) findViewById(R.id.view_pager);
         pager.setOffscreenPageLimit(3);
@@ -244,5 +252,12 @@ public class DetalleSqlite extends AppCompatActivity {
         }
     }
 
+
+    public void borrarImagen (){
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File myImageFile = new File(directory, "my_image.jpeg");
+        if (myImageFile.delete()) Log.d("image on the disk", "d");
+    }
 
 }

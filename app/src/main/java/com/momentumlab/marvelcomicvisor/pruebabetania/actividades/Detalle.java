@@ -1,8 +1,13 @@
 package com.momentumlab.marvelcomicvisor.pruebabetania.actividades;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.os.Environment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,6 +28,7 @@ import com.momentumlab.marvelcomicvisor.pruebabetania.ViewPagerCustomDuration;
 import com.momentumlab.marvelcomicvisor.pruebabetania.ZoomOutPageTransformer;
 import com.momentumlab.marvelcomicvisor.pruebabetania.data.ApiClient;
 import com.momentumlab.marvelcomicvisor.pruebabetania.data.modelosgeneradosretrofit.comic.Comic;
+import com.momentumlab.marvelcomicvisor.pruebabetania.data.modelosgeneradosretrofit.comic.Example;
 import com.momentumlab.marvelcomicvisor.pruebabetania.data.modelosgeneradosretrofit.creadores.Creador;
 import com.momentumlab.marvelcomicvisor.pruebabetania.data.modelosgeneradosretrofit.creadores.CreadoresConsulta;
 import com.momentumlab.marvelcomicvisor.pruebabetania.data.modelosgeneradosretrofit.personajes.Personaje;
@@ -31,6 +37,12 @@ import com.momentumlab.marvelcomicvisor.pruebabetania.data.modelosgeneradosretro
 import com.momentumlab.marvelcomicvisor.pruebabetania.data.modelosgeneradosretrofit.series.SeriesResult;
 import com.momentumlab.marvelcomicvisor.pruebabetania.data.sqlitebd.ComicsSQLiteHelper;
 import com.momentumlab.marvelcomicvisor.pruebabetania.data.sqlitebd.QueryComic;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -307,6 +319,16 @@ public class Detalle extends AppCompatActivity {
 
         }
 
+       /* try {
+            Log.d("defr","frfr");
+            String anImageUrl= comic.getImages().get(0).getPath() +"."+ comic.getImages().get(0).getExtension();
+            String newname = comic.getId()+"."+ comic.getImages().get(0).getExtension();
+            Picasso.with(this).load(anImageUrl).into(picassoImageTarget(getApplicationContext(), "imageDir", newname));
+            Log.d("defr2","frfr");
+        }catch (Exception e){
+            Log.d("---->",e.getMessage());
+        }*/
+
         fav.setImageResource(R.drawable.ic_favorite_black_36dp);
     }
 
@@ -317,8 +339,8 @@ public class Detalle extends AppCompatActivity {
         nombre = nombre.trim().replace("'", " ");
         String query = QueryComic.insertpersonaje(id, nombre);
         String h = QueryComic.insertPersonajesComic(id, comic.getId());
-
         guardaDosQuery(query, h);
+
     }
 
 
@@ -482,4 +504,44 @@ public class Detalle extends AppCompatActivity {
         FavoritosFragment.mAdapter.notifyDataSetChanged();
 
     }
+    private Target picassoImageTarget(Context context, final String imageDir, final String imageName) {
+        Log.d("picassoImageTarget", " picassoImageTarget");
+        ContextWrapper cw = new ContextWrapper(context);
+        final File directory = cw.getDir(imageDir, Context.MODE_PRIVATE); // path to /data/data/yourapp/app_imageDir
+        return new Target() {
+            @Override
+            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final File myImageFile = new File(directory, imageName); // Create image file
+                        FileOutputStream fos = null;
+                        try {
+                            fos = new FileOutputStream(myImageFile);
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } finally {
+                            try {
+                                fos.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        Log.i("image", "image saved to >>>" + myImageFile.getAbsolutePath());
+
+                    }
+                }).start();
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+            }
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                if (placeHolderDrawable != null) {}
+            }
+        };
+    }
+
 }
